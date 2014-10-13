@@ -26,7 +26,7 @@ play_pawn(Row, Col) :-
  * @2: +Row - the row to play on
  * @3: +Column - the column to play on
  * @4: +Type - the type to put
- * @5: ?NewBoard - the new board
+ * @5: -NewBoard - the new board
  */
 flip_pawns(Board, Row, Col, Type, NewBoard) :-
   change_pawn(Board, Row, Col, Type, Board0), % Changes at this position
@@ -48,7 +48,7 @@ flip_pawns(Board, Row, Col, Type, NewBoard) :-
  * @4: +RowDir - the row direction
  * @5: +ColDir - the dir direction
  * @6: +Type - the type to put
- * @7: ?NewBoard - the new board
+ * @7: -NewBoard - the new board
  */
 % Not appliable directions
 flip_in_dir(Board, Row, Col, DirRow, DirCol, Type, Board) :-
@@ -74,7 +74,7 @@ flip_in_dir(Board, Row, Col, DirRow, DirCol, Type, NewBoard) :-
  * @2: +Row - the row to change
  * @3: +Column - the column to change
  * @4: +Type - the type to put
- * @5: ?NewBoard - the new board
+ * @5: -NewBoard - the new board
  */
 change_pawn([H1|T], 0, Col, Type, [H2|T]) :-
   change_in_list(Col, Type, H1, H2). % At index 0, do the change
@@ -88,7 +88,7 @@ change_pawn([H|T1], Row1, Col, Type, [H|T2]) :-
  * @1: +Index - The index to change
  * @2: +Type - to this type
  * @3: +Origin - the original list
- * @4: ?New - the new list
+ * @4: -New - the new list
  */
 change_in_list(0, Type, [_|T], [Type|T]). % At index 0, do the change
 change_in_list(X1, Type, [H|T1], [H|T2]) :-

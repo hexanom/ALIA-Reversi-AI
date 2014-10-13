@@ -3,8 +3,8 @@
  * Asserts the space of playable pawn postions
  * @1: +CurrentPlayer - b or w
  * @2: +Board - the board to play on
- * @3: ?Row - the row to play on
- * @4: ?Column - the column to play on
+ * @3: -Row - the row to play on
+ * @4: -Column - the column to play on
  */
 admissible_plays(CurrentPlayer, Board, Row, Col) :-
   admissible_in_dir(CurrentPlayer, Board, Row, Col, -1, -1). % true in every direction
