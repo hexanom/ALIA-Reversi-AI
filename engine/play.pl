@@ -3,23 +3,6 @@
 ?- [rules].
 
 /**
- * Relation: play_pawn/2
- * Play a pawn and assert the new board and player
- * @1: +Row - the row to play on
- * @2: +Column - the column to play on
- */
-play_pawn(Row, Col) :-
-  current_player(Type), % Get the current player
-  board(Board), % Get the current board
-  admissible_plays(Type, Board, Row, Col), % Asserts if admissible
-  flip_pawns(Board, Row, Col, Type, NewBoard), % Flip the pawns
-  retract(board(Board)), % Retract Board
-  assert(board(NewBoard)), % Assert the new one
-  reverse_pawn(Type, NewType), % Select the next player
-  retract(current_player(Type)), % Retract the current player
-  assert(current_player(NewType)). % Assert the new player
-
-/**
  * Relation: flip_pawns/5
  * Flips pawn on the row/col position and flips all surroundings in every direction
  * @1: +Board - the original board

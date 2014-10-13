@@ -1,4 +1,3 @@
-?- [init].
 ?- [model].
 ?- [rules].
 ?- [play].

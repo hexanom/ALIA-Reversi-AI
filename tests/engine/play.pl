@@ -1,6 +1,5 @@
 /* Package Imports */
 ?- ['../../engine/play'].
-?- ['../../engine/init'].
 
 /* change_in_list/4 */
 ?- change_in_list(1, c, [a, b, c], [a, c, c]).
@@ -123,29 +122,3 @@
   [e, e, e, b, e, e, w, e],
   [e, e, e, b, e, e, e, e]
 ]).
-
-/* play_pawns/2 */
-?- play_pawn(5, 3).
-?- board([
-  [e, e, e, e, e, e, e, e],
-  [e, e, e, e, e, e, e, e],
-  [e, e, e, e, e, e, e, e],
-  [e, e, e, w, b, e, e, e],
-  [e, e, e, w, w, e, e, e],
-  [e, e, e, w, e, e, e, e],
-  [e, e, e, e, e, e, e, e],
-  [e, e, e, e, e, e, e, e]
-]).
-?- current_player(b).
-?- play_pawn(5, 2).
-?- board([
-  [e, e, e, e, e, e, e, e],
-  [e, e, e, e, e, e, e, e],
-  [e, e, e, e, e, e, e, e],
-  [e, e, e, w, b, e, e, e],
-  [e, e, e, b, w, e, e, e],
-  [e, e, b, w, e, e, e, e],
-  [e, e, e, e, e, e, e, e],
-  [e, e, e, e, e, e, e, e]
-]).
-?- current_player(w).
