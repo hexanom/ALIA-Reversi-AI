@@ -17,16 +17,40 @@ score([X|List], Color, Score) :-
 	score(List, Color, ScoreReste),
 	Score is NbOccurs + ScoreReste.
 	
+/* Aleatoire player NB : admissiblePlays unfinished !!*/
+randomPlay(Player, Board, Row, Col) :- 
+	all_possible_plays(Player, Board, AllPlays),
+	random_member([Row, Col], AllPlays).
+
+
+	/* all_possible_plays : tous les coups possible*/
+all_possible_plays(Player, Board, AllPlays) :-
+	findall([R, C], (admissible_plays(Player, Board, R, C)), AllPlays).
+	
+
 /* minimax*/
 
-% moves(+State, +Player, -NewStates) : NewBoards correspond correspond à tous les états possibles du Bord après coups admissibles
+%  : 
 % is_finished(+State) => Vrai si aucun joueur n'est en mesure de jouer un coup
 
-% Cas 1 : le score de player  
+/* moves(+State, +Player, -NewStates) : NewBoards correspond correspond à tous les états possibles du Bord après coups admissibles */
+moves(State, Player, NewStates) :- 
+	all_possible_plays(Player, State, AllPlays),
+    make_plays(Player, State, AllPlays, NewStates).
+
+/* make_plays : Joue tous les coups possibles et renvoie la liste des differents états du plateau */	
+make_plays(Player, State, [], State).
+	
+make_plays(Player, State, [[PlayRow|PlayCol]|OtherPlays], [BoardRes|OtherNewStates]) :-
+	change_pawn(State, PlayRow, PlayCol, Player, BoardRes),
+	make_plays(Player, State, OtherPlays, OtherNewStates).
+	
+
+% terminal: le score de notre joueur
 terminal(State, Value) :-
+	is_finished(State),
 	score(State, FavoritePlayer, X), 
 	Value is X,
-	is_finished(State),
 	!.
 
 % minimax : cas de base = le jeu est fini
@@ -66,6 +90,3 @@ choose(Player, Move1, Val1, Move2, Val2, Move1, Val1) :-
 	Player=/=FavoritePlayer,
 	!.
 choose(Player,_, _, Move2, Val2, Move2, Val2).
-
-
-	
