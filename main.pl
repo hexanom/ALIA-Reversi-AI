@@ -3,8 +3,10 @@
 ?- [settings].
 
 /**
- * game_loop/0
- * Defines the main game loop
+ * game_loop/2
+ * Defines the main game loop (check the output for results)
+ * @1: +Board - the inital board
+ * @2: +Plaer - the starting player (w or b)
  */
 game_loop(Board, w) :- % Not finished, w's turn
   not(is_finished(Board)),
