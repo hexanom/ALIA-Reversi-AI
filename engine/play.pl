@@ -16,17 +16,10 @@ play_pawn(Row, Col) :-
   retract(current_player(Type)),
   assert(current_player(TypeRes)).
 
-change_pawn(Board, Row, Col, Type, BoardRes) :-
-  between(0, 8, CopyRows),
-  nth0(CopyRows, Board, CopyLists),
-  nth0(CopyRows, BoardRes, CopyLists),
-  nth0(Row, Board, List),
-  nth0(Row, BoardRes, ListRes),
-  not(CopyRows = Row),
-  change_in_list(Col, Type, List, ListRes).
-
-copy_list([], []).
-copy_list([H|T1], [H|T2]) :- copy_list(T1, T2).
+change_pawn([H1|T], 0, Col, Type, [H2|T]) :- change_in_list(Col, Type, H1, H2).
+change_pawn([H|T1], Row1, Col, Type, [H|T2]) :-
+  Row2 is Row1 - 1,
+  change_pawn(T1, Row2, Col, Type, T2).
 
 change_in_list(0, Type, [_|T], [Type|T]).
 change_in_list(X1, Type, [H|T1], [H|T2]) :-

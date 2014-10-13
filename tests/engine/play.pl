@@ -2,7 +2,6 @@
 ?- ['../../engine/play'].
 ?- ['../../engine/init'].
 
-?- copy_list([a, b, c], [a, b, c]).
 ?- change_in_list(1, c, [a, b, c], [a, c, c]).
 ?- change_pawn([
   [e, e, e],
