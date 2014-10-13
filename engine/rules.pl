@@ -16,3 +16,12 @@ admissible_plays(CurrentPlayer, Board, Row, Col) :-
   pawn(Row, Col, e),
   reverse_pawn(CurrentPlayer, Type),
   pawn(RowDelta, ColDelta, Type).
+
+/**
+ * Relation: is_finished/1
+ * True when the game is finished
+ * @1: Board - the board to play on
+ */
+ is_finished(Board) :-
+     not(admissible_plays(w, Board, _, _)),
+     not(admissible_plays(b, Board, _, _)).
