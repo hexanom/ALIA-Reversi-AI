@@ -14,7 +14,7 @@ board(Board) :- Board =
 [e, e, e, e, e, e, e, e]
 ].
 
-bob :- board(Board),
+display_board :- board(Board),
   pawn(Board,0,0, P00),
   pawn(Board,0,1, P01),
   pawn(Board,0,2, P02),
