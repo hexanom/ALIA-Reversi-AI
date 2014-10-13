@@ -3,8 +3,8 @@
 ?- ['../../engine/model'].
 ?- ['../../engine/rules'].
 
-?- admissible_plays(w, 2, 4).
-?- admissible_plays(b, 4, 5).
+?- admissible_plays(w, B, 2, 4),board(B).
+?- admissible_plays(b, B, 4, 5),board(B).
 
 ?- board([
   [w, w, w, w, w, w, w, w],

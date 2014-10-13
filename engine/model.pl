@@ -5,10 +5,8 @@
  * @2: Col - the column to assert
  */
 is_inbound(Row, Col) :-
-        Row >= 0,
-        Row < 8,
-        Col >= 0,
-        Col < 8.
+  between(0, 7, Row),
+  between(0, 7, Col).
 
 /**
  * Relation: pawn/4
