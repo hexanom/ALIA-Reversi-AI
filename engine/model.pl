@@ -13,12 +13,12 @@ is_inbound(Row, Col) :-
 /**
  * Relation: pawn/4
  * Succeeds if Pawn is on the Board at the given Row and Col indexes
- * @1: Row - the row on the board
- * @2: Col - the column on the board
- * @3: Type - the type of pawn (e: empty, w: white, b: black)
+ * @1: Board - the board to play on
+ * @2: Row - the row on the board
+ * @3: Col - the column on the board
+ * @4: Type - the type of pawn (e: empty, w: white, b: black)
  */
-pawn(Row, Col, Type) :-
-  board(Board),
+pawn(Board, Row, Col, Type) :-
   is_inbound(Row, Col),
   nth0(Row, Board, List),
   nth0(Col, List, Type).

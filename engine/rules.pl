@@ -1,11 +1,12 @@
 /**
  * Relation: admissible_plays/3
  * Gives the space of playable pawn postions
- * @1: Row - the row to play on
- * @2: Column - the column to play on
+ * @1: CurrentPlayer - b or w
+ * @2: Board - the board to play on
+ * @3: Row - the row to play on
+ * @4: Column - the column to play on
  */
-admissible_plays(Row, Col) :-
-  current_player(CurrentPlayer),
+admissible_plays(CurrentPlayer, Board, Row, Col) :-
   RowM1 is Row - 1, /* PB */
   RowP1 is Row + 1,
   ColM1 is Col - 1,
