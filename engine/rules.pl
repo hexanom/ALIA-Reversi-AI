@@ -78,3 +78,11 @@ surrounds(Board, Row, Col, DirRow, DirCol, Type) :-
   IncCol < 8,
   surrounds(Board, IncRow, IncCol, DirRow, DirCol, Type). % Continue in the direction
 
+/**
+ * Relation: is_finished/1
+ * Asserts if the game is finished
+ * @1: +Board - the board to play on
+ */
+is_finished(Board) :-
+  not(admissible_plays(w, Board, _, _)),
+  not(admissible_plays(b, Board, _, _)).

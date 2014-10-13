@@ -3,6 +3,7 @@
 ?- ['../../engine/model'].
 ?- ['../../engine/rules'].
 
+/* admissible_plays/4 */
 ?- admissible_plays(w, [
   [e, e, e, e, e, e, e, e],
   [e, e, e, e, e, e, e, e],
@@ -53,3 +54,25 @@
   [e, e, e, e, e, e, e, e],
   [e, e, e, e, e, e, e, e]
 ], 2, 2).
+
+/* is_finished/1 */
+?- is_finished([
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w]
+]).
+?- not(is_finished([
+  [b, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, w],
+  [w, w, w, w, w, w, w, e]
+])).
