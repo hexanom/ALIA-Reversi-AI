@@ -1,6 +1,4 @@
 /* Package imports */
-?- ['../../engine/init'].
-?- ['../../engine/model'].
 ?- ['../../engine/rules'].
 
 /* admissible_plays/4 */
@@ -76,3 +74,31 @@
   [w, w, w, w, w, w, w, w],
   [w, w, w, w, w, w, w, e]
 ])).
+
+/* all_possible_plays/3 */
+?- all_possible_plays(w, [
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, w, b, e, e, e],
+  [e, e, e, b, w, e, e, e],
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, e, e, e, e, e]
+], [[5, 3], [3, 5], [2, 4], [4, 2]]).
+
+/* count/3 */
+?- count(a, [a, a, a], 3).
+?- count(a, [b, a, a], 2).
+
+/* score/3 */
+?- score([
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, w, b, e, e, e],
+  [e, e, e, b, w, e, e, e],
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, e, e, e, e, e],
+  [e, e, e, e, e, e, e, e]
+], w, 2).

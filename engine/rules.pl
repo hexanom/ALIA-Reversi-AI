@@ -1,3 +1,6 @@
+/* Module Imports */
+?- [model].
+
 /**
  * Relation: admissible_plays/3
  * Asserts the space of playable pawn postions
@@ -86,3 +89,41 @@ surrounds(Board, Row, Col, DirRow, DirCol, Type) :-
 is_finished(Board) :-
   not(admissible_plays(w, Board, _, _)),
   not(admissible_plays(b, Board, _, _)).
+
+/**
+ * all_possible_plays/3
+ * Unifes a list of all possible plays
+ * @1: +Player - the player that plays
+ * @2: +Board - the board
+ * @3: -AllPlays - tuples (Row, Col) of admissible plays
+ */
+all_possible_plays(Player, Board, AllPlays) :-
+  findall([R, C], (admissible_plays(Player, Board, R, C)), AllPlays).
+
+/**
+ * count/3
+ * Counts the number of occurences in a list of a certain element
+ * @1: +Element - the element to count
+ * @2: +List - the list to count in
+ * @3: -NbOccurrences - the count
+ */
+count(_, [], 0).
+count(E, [E|List], NbOccurs) :-
+  count(E, List, Occurs),
+  NbOccurs is Occurs + 1.
+count(E, [_|List], Occurs) :-
+  count(E, List, Occurs).
+
+/**
+ * score/3
+ * Counts the score of an opponent
+ * @1: +Board - the board where the score lies
+ * @2: +Color - the opponent's color
+ * @3: -Score - the computed score
+ */
+score([], _, 0).
+score([X|List], Color, Score) :-
+  count(Color, X, NbOccurs),
+  score(List, Color, Remaining),
+  Score is NbOccurs + Remaining.
+

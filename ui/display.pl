@@ -1,20 +1,12 @@
-pawn(Board, Row, Col, Type) :-
-nth0(Row, Board, List),
-nth0(Col, List, Type).
+/* Module Imports */
+?- ['../engine/model'].
 
-board(Board) :- Board =
-[
-[e, e, e, e, e, e, e, e],
-[e, e, e, e, e, e, e, e],
-[e, e, e, e, e, e, e, e],
-[e, e, e, w, b, e, e, e],
-[e, e, e, b, w, e, e, e],
-[e, e, e, e, e, e, e, e],
-[e, e, e, e, e, e, e, e],
-[e, e, e, e, e, e, e, e]
-].
-
-display_board :- board(Board),
+/**
+ * console_display/1
+ * Displays the board in the console
+ * @1: Board - the board to show
+ */
+console_display(Board) :-
   pawn(Board,0,0, P00),
   pawn(Board,0,1, P01),
   pawn(Board,0,2, P02),
