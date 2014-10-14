@@ -10,7 +10,7 @@
 * @4: -Col - The column where minmax will play
 */
 minmax_ai(Player, Board, Row, Col) :-
-  minimax(Board, Player, [Row, Col]).
+  minimax(Board, Player, [Row, Col], _).
 
 /**
 * moves/3
@@ -21,7 +21,7 @@ minmax_ai(Player, Board, Row, Col) :-
 */
 moves(State, Player, NewStates) :- 
   all_possible_plays(Player, State, AllPlays),
-    make_plays(Player, State, AllPlays, NewStates).
+  make_plays(Player, State, AllPlays, NewStates).
 
 /**
 * make_plays/4
@@ -31,88 +31,81 @@ moves(State, Player, NewStates) :-
 * @3: +AllPlays - All the plays to make.
 * @4: -AllBoards - All the board states after the plays were made.
 */
-make_plays(Player, State, [], State).
+make_plays(Player, State, [], []).
   
-make_plays(Player, State, [[PlayRow|PlayCol]|OtherPlays], [BoardRes|OtherNewStates]) :-
-  change_pawn(State, PlayRow, PlayCol, Player, BoardRes),
+make_plays(Player, State, [[PlayRow|[PlayCol]]|OtherPlays], [BoardRes|OtherNewStates]) :-
+  flip_pawns(State, PlayRow, PlayCol, Player, BoardRes),
   make_plays(Player, State, OtherPlays, OtherNewStates).
   
 /**
 * terminal/3
 * Succeeds when the game is over and returns the score of the IA's player.
 * @1: +State - The state of the board
-* @2: +FavoritePlayer - The player the IA roots for
+* @2: +Player - The currrent player
 * @3: -Value - The value associated to this game.
 */
-terminal(State, FavoritePlayer, Value) :-
+terminal(State, Player, Value) :-
   is_finished(State),
-  score(State, FavoritePlayer, X), 
-  Value is X,
+  score(State, Player, Value), 
   !.
 
 /**
 * minimax/4
 * Choose the best move for a player using the minmax algorithm.
 * @1: +State - The state of the board
-* @2: +FavoritePlayer - The player the IA roots for
+* @2: +Player - The current player
 * @3: -BestMove - The best move to make
 * @4: -Value - The value (fitness) associated with the best move
 */
 
-minimax(State, FavoritePlayer, _, Value) :- 
-  terminal(State, FavoritePlayer, Value),
+minimax(State, Player, _, Value) :- 
+  terminal(State, Player, Value),
   !.
 
-minimax(State, FavoritePlayer, BestMove, Value) :- 
-  currentPlayer(State, Player),
+minimax(State, Player, BestMove, Value) :- 
   moves(State, Player, Moves),
-  bestMove(Player, FavoritePlayer, State, Moves, BestMove, Value).
+  bestMove(Player, State, Moves, BestMove, Value).
   
 /**
-* bestMove/6
+* bestMove/5
 * Choose the best move between all possible move for a player.
 * @1: +Player - The player who will play this move
-* @2: +FavoritePlayer - The player the IA roots for
-* @3: +State - The board to consider
-* @4: +Moves - The possible moves for player
-* @5: -BestMove - The best move to make
-* @6: -BestValue - The value (fitness) associated to the best move to make
+* @2: +State - The board to consider
+* @3: +Moves - The possible moves for player
+* @4: -BestMove - The best move to make
+* @5: -BestValue - The value (fitness) associated to the best move to make
 */
 
 % One possible move
-bestMove(_, FavoritePlayer, State, [OneMove], OneMove, Value) :- 
+bestMove(Player, State, [OneMove], OneMove, Value) :- 
   !,
-  minimax(OneMove, _, Value).
+  reverse_pawn(Player, OtherPlayer),
+  minimax(OtherPlayer, OneMove, _, Value).
   
 % No possible move
-bestMove(_, FavoritePlayer, State, [], State, Value) :- 
+bestMove(Player, State, [], State, Value) :- 
   !,
-  minimax(State, _, Value).
+  reverse_pawn(Player, OtherPlayer),
+  minimax(OtherPlayer, State, _, Value).
 
 % General case
-bestMove(Player, FavoritePlayer, State, [FirstMove|OtherMoves], BestMove, BestValue) :-
-  minimax(FirstMove, _, ValueFromFirst),
+bestMove(Player, State, [FirstMove|OtherMoves], BestMove, BestValue) :-
+  reverse_pawn(Player, OtherPlayer),
+  minimax(FirstMove, OtherPlayer, _, ValueFromFirst),
   bestMove(Player, OtherMoves, MoveFromTail, ValueFromTail),
-  choose(Player, FavoritePlayer, FirstMove, ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
+  choose(FirstMove, ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
   
 /**
-* choose/8
+* choose/6
 * Choose the best move between two moves.
-* @1: +Player - The player who will play this move
-* @2: +FavoritePlayer - The player the IA roots for
-* @3: +Move1 - First move to compare
-* @4: +Val1 - The value (fitness) associated to Move1
-* @5: +Move2 - Second move to compare
-* @6: +Val2 - The value (fitness) associated to Move2
-* @7: -BestMove - The best move between both moves
-* @8: -BestValue - The value associated with the best move
+* @1: +Move1 - First move to compare
+* @2: +Val1 - The value (fitness) associated to Move1
+* @3: +Move2 - Second move to compare
+* @4: +Val2 - The value (fitness) associated to Move2
+* @5: -BestMove - The best move between both moves
+* @6: -BestValue - The value associated with the best move
 */
-choose(Player, FavoritePlayer, Move1, Val1, Move2, Val2, Move1, Val1) :-
+choose(Move1, Val1, Move2, Val2, Move1, Val1) :-
   Val1 >= Val2,
-  Player=:=FavoritePlayer,
   !.
-choose(Player, FavoritePlayer, Move1, Val1, Move2, Val2, Move1, Val1) :-
-  Val1 <= Val2,
-  Player=/=FavoritePlayer,
-  !.
-choose(Player, FavoritePlayer, _, _, Move2, Val2, Move2, Val2).
+choose(_, _, Move2, Val2, Move2, Val2).
