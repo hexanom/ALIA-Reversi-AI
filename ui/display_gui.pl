@@ -3,7 +3,11 @@
 
 /*création de la fenêtre (variable globale)*/
 image :-
-pce_global(@p, new(picture('Othello'))),
+pce_global(@p, new(dialog('Othello'))),
+send(@p,size,size(300,300)),
+send(@p, open),
+send(@p, append, new(B,button(ok, message(@p, destroy)))),
+send(@p, display, B,point(200,250)),
 send(@p, open).
 
 
@@ -27,24 +31,26 @@ board(Board) :- Board =
 /*création des pions.*/
 afficher(w,X,Y,@p):- send(@p, display, new(C, circle(25)), point(25*X,25*Y)),
 send(C, fill_pattern, colour(white)).
-afficher(b,X,Y,@p):- send(@p, display, new(R, circle(25)), point(25*X,25*Y)),
+afficher(b,X,Y,@p):- 
+send(@p, display, new(R, circle(25)), point(25*X,25*Y)),
 send(R, fill_pattern, colour(black)).
 
 
 /*création de la grille.*/
 display_board(@p) :-
-between(0,7,X),
-between(0,7,Y),
-send(@p, display,new(Z, box(25,25)),point(25*X,25*Y)),
-send(Z, fill_pattern, colour(green)).
+forall((between(0,7,X),
+between(0,7,Y)),
+(send(@p, display,new(Z, box(25,25)),point(25*X,25*Y)),
+send(Z, fill_pattern, colour(green)))).
 
 
 /*Récupération des pions dans la board*/
 display_pawns :-
+
 board(Board),
 between(0,7,X),
 between(0,7,Y),
-pawn(Board,X,Y,P), afficher(P,X,Y,@p).
+forall(pawn(Board,X,Y,P), afficher(P,X,Y,@p)).
 
 run :-
 image,
