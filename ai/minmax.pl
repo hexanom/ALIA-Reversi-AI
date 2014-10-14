@@ -10,7 +10,7 @@
 * @4: -Col - The column where minmax will play
 */
 minmax_ai(Player, Board, Row, Col) :-
-  minimax(Board, Player, [Row, Col], _).
+  minimax(Board, Player, [Row, Col], _, 3).
 
 /**
 * moves/3
@@ -44,8 +44,13 @@ make_plays(Player, State, [[PlayRow|[PlayCol]]|OtherPlays], [BoardRes|OtherNewSt
 * @2: +Player - The currrent player
 * @3: -Value - The value associated to this game.
 */
-terminal(State, Player, Value) :-
+terminal(State, Player, Value, Depth) :-
   is_finished(State),
+  score(State, Player, Value), 
+  !.
+
+terminal(State, Player, Value, Depth) :-
+  Depth =:= 0, 
   score(State, Player, Value), 
   !.
 
@@ -58,13 +63,13 @@ terminal(State, Player, Value) :-
 * @4: -Value - The value (fitness) associated with the best move
 */
 
-minimax(State, Player, _, Value) :- 
-  terminal(State, Player, Value),
+minimax(State, Player, _, Value, Depth) :- 
+  terminal(State, Player, Value, Depth),
   !.
 
-minimax(State, Player, BestMove, Value) :- 
+minimax(State, Player, BestMove, Value, Depth) :- 
   moves(State, Player, Moves),
-  bestMove(Player, State, Moves, BestMove, Value).
+  bestMove(Player, State, Moves, BestMove, Value, Depth).
   
 /**
 * bestMove/5
@@ -77,22 +82,25 @@ minimax(State, Player, BestMove, Value) :-
 */
 
 % One possible move
-bestMove(Player, State, [OneMove], OneMove, Value) :- 
+bestMove(Player, State, [OneMove], OneMove, Value, Depth) :- 
   !,
   reverse_pawn(Player, OtherPlayer),
-  minimax(OtherPlayer, OneMove, _, Value).
+  NewDepth is Depth - 1.
+  minimax(OtherPlayer, OneMove, _, Value, NewDepth).
   
 % No possible move
-bestMove(Player, State, [], State, Value) :- 
+bestMove(Player, State, [], State, Value, Depth) :- 
   !,
   reverse_pawn(Player, OtherPlayer),
-  minimax(OtherPlayer, State, _, Value).
+  NewDepth is Depth - 1.
+  minimax(OtherPlayer, State, _, Value, NewDepth).
 
 % General case
-bestMove(Player, State, [FirstMove|OtherMoves], BestMove, BestValue) :-
+bestMove(Player, State, [FirstMove|OtherMoves], BestMove, BestValue, Depth) :-
   reverse_pawn(Player, OtherPlayer),
-  minimax(FirstMove, OtherPlayer, _, ValueFromFirst),
-  bestMove(Player, State, OtherMoves, MoveFromTail, ValueFromTail),
+  NewDepth is Depth - 1,
+  minimax(FirstMove, OtherPlayer, _, ValueFromFirst, NewDepth),
+  bestMove(Player, State, OtherMoves, MoveFromTail, ValueFromTail, Depth),
   choose(FirstMove, ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
   
 /**
