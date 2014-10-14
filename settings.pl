@@ -13,5 +13,5 @@ ai_w(Player, Board, Row, Col) :- random_ai(Player, Board, Row, Col).
 % ai_w(Player, Board, Row, Col) :- minmax_ai(Player, Board, Row, Col).
 
 %% Choose your Black Player AI
-ai_b(Player, Board, Row, Col) :- random_ai(Player, Board, Row, Col).
-% ai_b(Player, Board, Row, Col) :- minmax_ai(Player, Board, Row, Col).
+%ai_b(Player, Board, Row, Col) :- random_ai(Player, Board, Row, Col).
+ai_b(Player, Board, Row, Col) :- minmax_ai(Player, Board, Row, Col).

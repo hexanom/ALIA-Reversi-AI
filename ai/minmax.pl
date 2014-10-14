@@ -92,7 +92,7 @@ bestMove(Player, State, [], State, Value) :-
 bestMove(Player, State, [FirstMove|OtherMoves], BestMove, BestValue) :-
   reverse_pawn(Player, OtherPlayer),
   minimax(FirstMove, OtherPlayer, _, ValueFromFirst),
-  bestMove(Player, OtherMoves, MoveFromTail, ValueFromTail),
+  bestMove(Player, State, OtherMoves, MoveFromTail, ValueFromTail),
   choose(FirstMove, ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
   
 /**
