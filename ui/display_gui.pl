@@ -1,167 +1,52 @@
+
+
+
+/*création de la fenêtre (variable globale)*/
+image :-
+pce_global(@p, new(picture('Othello'))),
+send(@p, open).
+
+
+
 pawn(Board, Row, Col, Type) :-
 nth0(Row, Board, List),
 nth0(Col, List, Type).
 
+/* Board à envoyer en paramètre (inversion ligne-colonne par rapport à l'afichage */
 board(Board) :- Board =
 [
-[e, e, e, e, e, e, e, e],
-[e, e, e, e, e, e, e, e],
+[e, e, e, e, w, e, e, e],
+[e, e, e, e, e, e, b, e],
 [e, e, e, e, e, e, e, e],
 [e, e, e, w, b, e, e, e],
-[e, e, e, b, w, e, e, e],
+[e, w, e, b, w, e, e, e],
 [e, e, e, e, e, e, e, e],
 [e, e, e, e, e, e, e, e],
-[e, e, e, e, e, e, e, e]
+[e, e, e, e, b, e, e, e]
 ].
-/*remplissage de la board */ 
-			
-afficher(w,X,Y,a):- send(a, display, new(@c, circle(25)), point(25*X,25*Y)),
-                      send(@c, fill_pattern, colour(white)).
-afficher(b,X,Y,a):- send(a, display, new(@c, circle(25)), point(25*X,25*Y)),
-                      send(@c, fill_pattern, colour(black)).
-afficher(e,X,Y).
-			
-			
+/*création des pions.*/
+afficher(w,X,Y,@p):- send(@p, display, new(C, circle(25)), point(25*X,25*Y)),
+send(C, fill_pattern, colour(white)).
+afficher(b,X,Y,@p):- send(@p, display, new(R, circle(25)), point(25*X,25*Y)),
+send(R, fill_pattern, colour(black)).
 
 
 /*création de la grille.*/
-run :- 
-new(@p, picture('Othello')),
-send(@p, open),
+display_board(@p) :-
+between(0,7,X),
+between(0,7,Y),
+send(@p, display,new(Z, box(25,25)),point(25*X,25*Y)),
+send(Z, fill_pattern, colour(green)).
 
-send(@p, display,new(@b00, box(25,25)),point(0,0)), 
-send(@b00, fill_pattern, colour(green)),
-send(@p, display,new(@b01, box(25,25)),point(25,0)), 
-send(@b01, fill_pattern, colour(green)),
-send(@p, display,new(@b02, box(25,25)),point(50,0)), 
-send(@b02, fill_pattern, colour(green)),
-send(@p, display,new(@b03, box(25,25)),point(75,0)), 
-send(@b03, fill_pattern, colour(green)),
-send(@p, display,new(@b04, box(25,25)),point(100,0)), 
-send(@b04, fill_pattern, colour(green)),
-send(@p, display,new(@b05, box(25,25)),point(125,0)), 
-send(@b05, fill_pattern, colour(green)),
-send(@p, display,new(@b06, box(25,25)),point(150,0)), 
-send(@b06, fill_pattern, colour(green)),
-send(@p, display,new(@b07, box(25,25)),point(175,0)), 
-send(@b07, fill_pattern, colour(green)),
-send(@p, display,new(@b10, box(25,25)),point(0,25)), 
-send(@b10, fill_pattern, colour(green)),
-send(@p, display,new(@b11, box(25,25)),point(25,25)), 
-send(@b11, fill_pattern, colour(green)),
-send(@p, display,new(@b12, box(25,25)),point(50,25)), 
-send(@b12, fill_pattern, colour(green)),
-send(@p, display,new(@b13, box(25,25)),point(75,25)), 
-send(@b13, fill_pattern, colour(green)),
-send(@p, display,new(@b14, box(25,25)),point(100,25)), 
-send(@b14, fill_pattern, colour(green)),
-send(@p, display,new(@b15, box(25,25)),point(125,25)), 
-send(@b15, fill_pattern, colour(green)),
-send(@p, display,new(@b16, box(25,25)),point(150,25)), 
-send(@b16, fill_pattern, colour(green)),
-send(@p, display,new(@b17, box(25,25)),point(175,25)), 
-send(@b17, fill_pattern, colour(green)),
-send(@p, display,new(@b20, box(25,25)),point(0,50)), 
-send(@b20, fill_pattern, colour(green)),
-send(@p, display,new(@b21, box(25,25)),point(25,50)), 
-send(@b21, fill_pattern, colour(green)),
-send(@p, display,new(@b22, box(25,25)),point(50,50)), 
-send(@b22, fill_pattern, colour(green)),
-send(@p, display,new(@b23, box(25,25)),point(75,50)), 
-send(@b23, fill_pattern, colour(green)),
-send(@p, display,new(@b24, box(25,25)),point(100,50)), 
-send(@b24, fill_pattern, colour(green)),
-send(@p, display,new(@b25, box(25,25)),point(125,50)), 
-send(@b25, fill_pattern, colour(green)),
-send(@p, display,new(@b26, box(25,25)),point(150,50)), 
-send(@b26, fill_pattern, colour(green)),
-send(@p, display,new(@b27, box(25,25)),point(175,50)), 
-send(@b27, fill_pattern, colour(green)),
-send(@p, display,new(@b30, box(25,25)),point(0,75)), 
-send(@b30, fill_pattern, colour(green)),
-send(@p, display,new(@b31, box(25,25)),point(25,75)), 
-send(@b31, fill_pattern, colour(green)),
-send(@p, display,new(@b32, box(25,25)),point(50,75)), 
-send(@b32, fill_pattern, colour(green)),
-send(@p, display,new(@b33, box(25,25)),point(75,75)), 
-send(@b33, fill_pattern, colour(green)),
-send(@p, display,new(@b34, box(25,25)),point(100,75)), 
-send(@b34, fill_pattern, colour(green)),
-send(@p, display,new(@b35, box(25,25)),point(125,75)), 
-send(@b35, fill_pattern, colour(green)),
-send(@p, display,new(@b36, box(25,25)),point(150,75)), 
-send(@b36, fill_pattern, colour(green)),
-send(@p, display,new(@b37, box(25,25)),point(175,75)), 
-send(@b37, fill_pattern, colour(green)),
-send(@p, display,new(@b40, box(25,25)),point(0,100)), 
-send(@b40, fill_pattern, colour(green)),
-send(@p, display,new(@b41, box(25,25)),point(25,100)), 
-send(@b41, fill_pattern, colour(green)),
-send(@p, display,new(@b42, box(25,25)),point(50,100)), 
-send(@b42, fill_pattern, colour(green)),
-send(@p, display,new(@b43, box(25,25)),point(75,100)), 
-send(@b43, fill_pattern, colour(green)),
-send(@p, display,new(@b44, box(25,25)),point(100,100)), 
-send(@b44, fill_pattern, colour(green)),
-send(@p, display,new(@b45, box(25,25)),point(125,100)), 
-send(@b45, fill_pattern, colour(green)),
-send(@p, display,new(@b46, box(25,25)),point(150,100)), 
-send(@b46, fill_pattern, colour(green)),
-send(@p, display,new(@b47, box(25,25)),point(175,100)), 
-send(@b47, fill_pattern, colour(green)),
-send(@p, display,new(@b50, box(25,25)),point(0,125)), 
-send(@b50, fill_pattern, colour(green)),
-send(@p, display,new(@b51, box(25,25)),point(25,125)), 
-send(@b51, fill_pattern, colour(green)),
-send(@p, display,new(@b52, box(25,25)),point(50,125)), 
-send(@b52, fill_pattern, colour(green)),
-send(@p, display,new(@b53, box(25,25)),point(75,125)), 
-send(@b53, fill_pattern, colour(green)),
-send(@p, display,new(@b54, box(25,25)),point(100,125)), 
-send(@b54, fill_pattern, colour(green)),
-send(@p, display,new(@b55, box(25,25)),point(125,125)), 
-send(@b55, fill_pattern, colour(green)),
-send(@p, display,new(@b56, box(25,25)),point(150,125)), 
-send(@b56, fill_pattern, colour(green)),
-send(@p, display,new(@b57, box(25,25)),point(175,125)), 
-send(@b57, fill_pattern, colour(green)),
-send(@p, display,new(@b60, box(25,25)),point(0,150)), 
-send(@b60, fill_pattern, colour(green)),
-send(@p, display,new(@b61, box(25,25)),point(25,150)), 
-send(@b61, fill_pattern, colour(green)),
-send(@p, display,new(@b62, box(25,25)),point(50,150)), 
-send(@b62, fill_pattern, colour(green)),
-send(@p, display,new(@b63, box(25,25)),point(75,150)), 
-send(@b63, fill_pattern, colour(green)),
-send(@p, display,new(@b64, box(25,25)),point(100,150)), 
-send(@b64, fill_pattern, colour(green)),
-send(@p, display,new(@b65, box(25,25)),point(125,150)), 
-send(@b65, fill_pattern, colour(green)),
-send(@p, display,new(@b66, box(25,25)),point(150,150)), 
-send(@b66, fill_pattern, colour(green)),
-send(@p, display,new(@b67, box(25,25)),point(175,150)), 
-send(@b67, fill_pattern, colour(green)),
-send(@p, display,new(@b70, box(25,25)),point(0,175)), 
-send(@b70, fill_pattern, colour(green)),
-send(@p, display,new(@b71, box(25,25)),point(25,175)), 
-send(@b71, fill_pattern, colour(green)),
-send(@p, display,new(@b72, box(25,25)),point(50,175)), 
-send(@b72, fill_pattern, colour(green)),
-send(@p, display,new(@b73, box(25,25)),point(75,175)), 
-send(@b73, fill_pattern, colour(green)),
-send(@p, display,new(@b74, box(25,25)),point(100,175)), 
-send(@b74, fill_pattern, colour(green)),
-send(@p, display,new(@b75, box(25,25)),point(125,175)), 
-send(@b75, fill_pattern, colour(green)),
-send(@p, display,new(@b76, box(25,25)),point(150,175)), 
-send(@b76, fill_pattern, colour(green)),
-send(@p, display,new(@b77, box(25,25)),point(175,175)), 
-send(@b77, fill_pattern, colour(green)),
-board(Board), 
-between(X,0,7),
-between(Y,0,7),
+
+/*Récupération des pions dans la board*/
+display_pawns :-
+board(Board),
+between(0,7,X),
+between(0,7,Y),
 pawn(Board,X,Y,P), afficher(P,X,Y,@p).
 
-
-
-			
+run :-
+image,
+display_board(@p),
+display_pawns.
