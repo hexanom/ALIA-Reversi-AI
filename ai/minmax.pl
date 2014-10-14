@@ -64,7 +64,8 @@ minimax(State, Player, _, Value) :-
 
 minimax(State, Player, BestMove, Value) :- 
   moves(State, Player, Moves),
-  bestMove(Player, State, Moves, BestMove, Value).
+  reverse_pawn(Player, OtherPlayer),
+  bestMove(OtherPlayer, State, Moves, BestMove, Value).
   
 /**
 * bestMove/5
@@ -79,19 +80,16 @@ minimax(State, Player, BestMove, Value) :-
 % One possible move
 bestMove(Player, State, [OneMove], OneMove, Value) :- 
   !,
-  reverse_pawn(Player, OtherPlayer),
-  minimax(OtherPlayer, OneMove, _, Value).
+  minimax(Player, OneMove, _, Value).
   
 % No possible move
 bestMove(Player, State, [], State, Value) :- 
   !,
-  reverse_pawn(Player, OtherPlayer),
-  minimax(OtherPlayer, State, _, Value).
+  minimax(Player, State, _, Value).
 
 % General case
 bestMove(Player, State, [FirstMove|OtherMoves], BestMove, BestValue) :-
-  reverse_pawn(Player, OtherPlayer),
-  minimax(FirstMove, OtherPlayer, _, ValueFromFirst),
+  minimax(FirstMove, Player, _, ValueFromFirst),
   bestMove(Player, OtherMoves, MoveFromTail, ValueFromTail),
   choose(FirstMove, ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
   
