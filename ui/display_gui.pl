@@ -4,12 +4,24 @@
 /*création de la fenêtre (variable globale)*/
 image :-
 pce_global(@p, new(dialog('Othello'))),
-send(@p,size,size(300,300)),
+send(@p,size,size(400,500)),
 send(@p, open),
-send(@p, append, new(B,button(ok, message(@p, destroy)))),
-send(@p, display, B,point(200,250)),
+send(@p, append, new(B,button(quit, message(@p, destroy)))),
+send(@p, display, B,point(163,440)),
 send(@p, open).
 
+display_players :- 
+new(T1, text('player_1 :')),
+send(@p, display, T1, point(40,420)),
+new(T2, text(': player_2')),
+send(@p, display, T2, point(320, 420)).
+
+display_score(Score,1) :-
+new(T3, text(Score)),
+send(@p, display, T3, point(100, 420)).
+display_score(Score,2) :-
+new(T4, text(Score)),
+send(@p, display, T4, point(300, 420)).
 
 
 pawn(Board, Row, Col, Type) :-
@@ -29,30 +41,34 @@ board(Board) :- Board =
 [e, e, e, e, b, e, e, e]
 ].
 /*création des pions.*/
-afficher(w,X,Y,@p):- send(@p, display, new(C, circle(25)), point(25*X,25*Y)),
+afficher(w,X,Y,@p):- send(@p, display, new(C, circle(50)), point(50*X,50*Y)),
 send(C, fill_pattern, colour(white)).
 afficher(b,X,Y,@p):- 
-send(@p, display, new(R, circle(25)), point(25*X,25*Y)),
+send(@p, display, new(R, circle(50)), point(50*X,50*Y)),
 send(R, fill_pattern, colour(black)).
-
+afficher(e,X,Y,@p).
 
 /*création de la grille.*/
 display_board(@p) :-
 forall((between(0,7,X),
 between(0,7,Y)),
-(send(@p, display,new(Z, box(25,25)),point(25*X,25*Y)),
-send(Z, fill_pattern, colour(green)))).
+(send(@p, display,new(Z, box(50,50)),point(50*X,50*Y)),
+send(Z, fill_pattern, colour(darkgreen)))).
 
 
 /*Récupération des pions dans la board*/
 display_pawns :-
 
-board(Board),
-between(0,7,X),
+
+forall((board(Board),between(0,7,X),
 between(0,7,Y),
-forall(pawn(Board,X,Y,P), afficher(P,X,Y,@p)).
+pawn(Board,X,Y,P)),
+afficher(P,X,Y,@p)).
 
 run :-
 image,
 display_board(@p),
-display_pawns.
+display_pawns,
+display_players,
+display_score('3',1),
+display_score('54',2).
