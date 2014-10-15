@@ -10,33 +10,9 @@
 * @4: -Col - The column where minmax will play
 */
 minmax_ai(Player, Board, Row, Col) :-
-  minimax(Board, Player, [Row, Col], _, 3).
+  write(Row), write(-), writeln(Col),
+  minimax(Board, Player, [Row, Col], _, 5).
 
-/**
-* moves/3
-* Returns all boards states after playing every possible plays for a specific player
-* @1: +State - The board to make the plays against
-* @2: +Player - The player making the plays
-* @3: -NewStates - All the board states after all the possible plays were made
-*/
-moves(State, Player, NewStates) :- 
-  all_possible_plays(Player, State, AllPlays),
-  make_plays(Player, State, AllPlays, NewStates).
-
-/**
-* make_plays/4
-* Returns all boards states after playing every play against a single state
-* @1: +Player - The player making the plays
-* @2: +State - The board to make the plays against
-* @3: +AllPlays - All the plays to make.
-* @4: -AllBoards - All the board states after the plays were made.
-*/
-make_plays(Player, State, [], []).
-  
-make_plays(Player, State, [[PlayRow|[PlayCol]]|OtherPlays], [BoardRes|OtherNewStates]) :-
-  flip_pawns(State, PlayRow, PlayCol, Player, BoardRes),
-  make_plays(Player, State, OtherPlays, OtherNewStates).
-  
 /**
 * terminal/3
 * Succeeds when the game is over and returns the score of the IA's player.
@@ -44,14 +20,14 @@ make_plays(Player, State, [[PlayRow|[PlayCol]]|OtherPlays], [BoardRes|OtherNewSt
 * @2: +Player - The currrent player
 * @3: -Value - The value associated to this game.
 */
-terminal(State, Player, Value, Depth) :-
-  is_finished(State),
-  score(State, Player, Value), 
+terminal(Board, Player, Value, Depth) :-
+  is_finished(Board),
+  score(Board, Player, Value), 
   !.
 
-terminal(State, Player, Value, Depth) :-
+terminal(Board, Player, Value, Depth) :-
   Depth =:= 0, 
-  score(State, Player, Value), 
+  score(Board, Player, Value), 
   !.
 
 /**
@@ -63,13 +39,13 @@ terminal(State, Player, Value, Depth) :-
 * @4: -Value - The value (fitness) associated with the best move
 */
 
-minimax(State, Player, _, Value, Depth) :- 
-  terminal(State, Player, Value, Depth),
+minimax(Board, Player, _, Value, Depth) :-
+  terminal(Board, Player, Value, Depth),
   !.
 
-minimax(State, Player, BestMove, Value, Depth) :- 
-  moves(State, Player, Moves),
-  bestMove(Player, State, Moves, BestMove, Value, Depth).
+minimax(Board, Player, BestMove, Value, Depth) :- 
+  all_possible_plays(Player, Board, Moves),
+  bestMove(Player, Board, Moves, BestMove, Value, Depth).
   
 /**
 * bestMove/5
@@ -82,26 +58,33 @@ minimax(State, Player, BestMove, Value, Depth) :-
 */
 
 % One possible move
-bestMove(Player, State, [OneMove], OneMove, Value, Depth) :- 
+bestMove(Board, Player, [[Row, Col]], OneMove, Value, Depth) :- 
   !,
+  NewDepth is Depth - 1,
   reverse_pawn(Player, OtherPlayer),
-  NewDepth is Depth - 1.
-  minimax(OtherPlayer, OneMove, _, Value, NewDepth).
+  
+  flip_pawns(Board, Row, Col, Player, NewBoard),
+  minimax(NewBoard, OtherPlayer, _, Value, NewDepth).
   
 % No possible move
-bestMove(Player, State, [], State, Value, Depth) :- 
+bestMove(Board, Player, [], [], Value, Depth) :- 
   !,
+  NewDepth is Depth - 1,
   reverse_pawn(Player, OtherPlayer),
-  NewDepth is Depth - 1.
-  minimax(OtherPlayer, State, _, Value, NewDepth).
+  
+  minimax(Board, OtherPlayer, _, Value, NewDepth).
 
 % General case
-bestMove(Player, State, [FirstMove|OtherMoves], BestMove, BestValue, Depth) :-
-  reverse_pawn(Player, OtherPlayer),
+bestMove(Board, Player, [[Row, Col]|OtherMoves], BestMove, BestValue, Depth) :-
   NewDepth is Depth - 1,
-  minimax(FirstMove, OtherPlayer, _, ValueFromFirst, NewDepth),
-  bestMove(Player, State, OtherMoves, MoveFromTail, ValueFromTail, Depth),
-  choose(FirstMove, ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
+  reverse_pawn(Player, OtherPlayer),
+  
+  flip_pawns(Board, Row, Col, Player, NewBoard),
+  minimax(NewBoard, OtherPlayer, _, ValueFromFirst, NewDepth),
+  
+  bestMove(Board, Player, OtherMoves, MoveFromTail, ValueFromTail, Depth),
+  
+  choose([Row, Col], ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
   
 /**
 * choose/6
