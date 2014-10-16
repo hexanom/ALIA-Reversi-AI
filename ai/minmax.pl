@@ -10,7 +10,7 @@
 * @4: -Col - The column where minmax will play
 */
 minmax_ai(Player, Board, Row, Col) :-
-  minimax(Player, Board, Player, [Row, Col], _, 3).
+  minimax(Player, Board, Player, [Row, Col], _, 2).
 
 /**
 * terminal/3
@@ -19,13 +19,13 @@ minmax_ai(Player, Board, Row, Col) :-
 * @2: +Player - The currrent player
 * @3: -Value - The value associated to this game.
 */
-terminal(Board, FavPlayer, Value, Depth) :-
+terminal(Board, FavPlayer, Value, _) :-
   is_finished(Board),
   score(Board, FavPlayer, Value), 
   !.
 
 terminal(Board, FavPlayer, Value, Depth) :-
-  Depth =:= 0, 
+  Depth == 0, 
   score(Board, FavPlayer, Value), 
   !.
 
@@ -38,7 +38,7 @@ terminal(Board, FavPlayer, Value, Depth) :-
 * @4: -Value - The value (fitness) associated with the best move
 */
 
-minimax(FavPlayer, Board, Player, _, Value, Depth) :-
+minimax(FavPlayer, Board, _, _, Value, Depth) :-
   terminal(Board, FavPlayer, Value, Depth),
   !.
 
@@ -65,7 +65,7 @@ bestMove(FavPlayer, Board, Player, [], [], Value, Depth) :-
   minimax(FavPlayer, Board, OtherPlayer, _, Value, NewDepth).
 
 % One possible move
-bestMove(FavPlayer, Board, Player, [[Row, Col]], OneMove, Value, Depth) :- 
+bestMove(FavPlayer, Board, Player, [[Row, Col]], [[Row, Col]], Value, Depth) :- 
   !,
   NewDepth is Depth - 1,
   
@@ -83,7 +83,7 @@ bestMove(FavPlayer, Board, Player, [[Row, Col]|OtherMoves], BestMove, BestValue,
   
   bestMove(FavPlayer, Board, Player, OtherMoves, MoveFromTail, ValueFromTail, Depth),
   
-  choose(FavPlayer, OtherPlayer, [Row, Col], ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
+  choose(FavPlayer, Player, [Row, Col], ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
   
 /**
 * choose/6
@@ -95,11 +95,11 @@ bestMove(FavPlayer, Board, Player, [[Row, Col]|OtherMoves], BestMove, BestValue,
 * @5: -BestMove - The best move between both moves
 * @6: -BestValue - The value associated with the best move
 */
-choose(FavPlayer, Player, Move1, Val1, Move2, Val2, Move1, Val1) :-
+choose(FavPlayer, Player, Move1, Val1, _, Val2, Move1, Val1) :-
   FavPlayer == Player,
   Val1 >= Val2,
   !.
-choose(FavPlayer, Player, Move1, Val1, Move2, Val2, Move1, Val1) :-
+choose(FavPlayer, Player, Move1, Val1, _, Val2, Move1, Val1) :-
   FavPlayer \== Player,
   Val1 =< Val2,
   !.
