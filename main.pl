@@ -54,3 +54,5 @@ game_loop(Board, _) :- % Game finished, score time !
   [e, e, e, e, e, e, e, e],
   [e, e, e, e, e, e, e, e]
 ], w).
+
+?- halt.
