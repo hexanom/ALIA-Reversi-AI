@@ -62,6 +62,7 @@ bestMove(FavPlayer, Board, Player, [], [], Value, Depth) :-
   NewDepth is Depth - 1,
   
   reverse_pawn(Player, OtherPlayer),
+  
   minimax(FavPlayer, Board, OtherPlayer, _, Value, NewDepth).
 
 % One possible move
@@ -71,6 +72,7 @@ bestMove(FavPlayer, Board, Player, [[Row, Col]], [[Row, Col]], Value, Depth) :-
   
   flip_pawns(Board, Row, Col, Player, NewBoard),
   reverse_pawn(Player, OtherPlayer),
+  
   minimax(FavPlayer, NewBoard, OtherPlayer, _, Value, NewDepth).
 
 % General case
@@ -79,8 +81,8 @@ bestMove(FavPlayer, Board, Player, [[Row, Col]|OtherMoves], BestMove, BestValue,
   
   flip_pawns(Board, Row, Col, Player, NewBoard),
   reverse_pawn(Player, OtherPlayer),
-  minimax(FavPlayer, NewBoard, OtherPlayer, _, ValueFromFirst, NewDepth),
   
+  minimax(FavPlayer, NewBoard, OtherPlayer, _, ValueFromFirst, NewDepth),
   bestMove(FavPlayer, Board, Player, OtherMoves, MoveFromTail, ValueFromTail, Depth),
   
   choose(FavPlayer, Player, [Row, Col], ValueFromFirst, MoveFromTail, ValueFromTail, BestMove, BestValue).
@@ -97,10 +99,10 @@ bestMove(FavPlayer, Board, Player, [[Row, Col]|OtherMoves], BestMove, BestValue,
 */
 choose(FavPlayer, Player, Move1, Val1, _, Val2, Move1, Val1) :-
   FavPlayer == Player,
-  Val1 >= Val2,
+  Val1 > Val2,
   !.
 choose(FavPlayer, Player, Move1, Val1, _, Val2, Move1, Val1) :-
   FavPlayer \== Player,
-  Val1 =< Val2,
+  Val1 < Val2,
   !.
 choose(_, _, _, _, Move2, Val2, Move2, Val2).
