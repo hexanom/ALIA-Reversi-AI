@@ -10,7 +10,7 @@
 * @4: -Col - The column where minmax will play
 */
 minmax_ai(Player, Board, Row, Col) :-
-  minimax(Board, Player, [Row, Col], _, 5).
+  minimax(Board, Player, [Row, Col], _, 2).
 
 /**
 * terminal/3
@@ -44,8 +44,7 @@ minimax(Board, Player, _, Value, Depth) :-
 
 minimax(Board, Player, BestMove, Value, Depth) :- 
   all_possible_plays(Player, Board, Moves),
-  reverse_pawn(Player, OtherPlayer),
-  bestMove(OtherPlayer, Board, Moves, BestMove, Value, Depth).
+  bestMove(Board, Player, Moves, BestMove, Value, Depth).
   
 /**
 * bestMove/5
@@ -63,21 +62,24 @@ bestMove(Board, Player, [[Row, Col]], OneMove, Value, Depth) :-
   NewDepth is Depth - 1,
   
   flip_pawns(Board, Row, Col, Player, NewBoard),
-  minimax(NewBoard, Player, _, Value, NewDepth).
+  reverse_pawn(Player, OtherPlayer),
+  minimax(NewBoard, OtherPlayer, _, Value, NewDepth).
   
 % No possible move
 bestMove(Board, Player, [], [], Value, Depth) :- 
   !,
   NewDepth is Depth - 1,
   
-  minimax(Board, Player, _, Value, NewDepth).
+  reverse_pawn(Player, OtherPlayer),
+  minimax(Board, OtherPlayer, _, Value, NewDepth).
 
 % General case
 bestMove(Board, Player, [[Row, Col]|OtherMoves], BestMove, BestValue, Depth) :-
   NewDepth is Depth - 1,
   
   flip_pawns(Board, Row, Col, Player, NewBoard),
-  minimax(NewBoard, Player, _, ValueFromFirst, NewDepth),
+  reverse_pawn(Player, OtherPlayer),
+  minimax(NewBoard, OtherPlayer, _, ValueFromFirst, NewDepth),
   
   bestMove(Board, Player, OtherMoves, MoveFromTail, ValueFromTail, Depth),
   
