@@ -2,7 +2,7 @@
 
 
 /*création de la fenêtre (variable globale)*/
-image :-
+init_image :-
 pce_global(@p, new(dialog('Othello'))),
 send(@p,size,size(400,500)),
 send(@p, open),
@@ -28,8 +28,8 @@ pawn(Board, Row, Col, Type) :-
 nth0(Row, Board, List),
 nth0(Col, List, Type).
 
-/* Board à envoyer en paramètre (inversion ligne-colonne par rapport à l'afichage */
-board(Board) :- Board =
+/* Board à envoyer en paramètre (inversion ligne-colonne par rapport à l'afichage 
+Board =
 [
 [e, e, e, e, w, e, e, e],
 [e, e, e, e, e, e, b, e],
@@ -39,8 +39,7 @@ board(Board) :- Board =
 [e, e, e, e, e, e, e, e],
 [e, e, e, e, e, e, e, e],
 [e, e, e, e, b, e, e, e]
-].
-/*création des pions.*/
+].*/
 afficher(w,X,Y,@p):- send(@p, display, new(C, circle(50)), point(50*X,50*Y)),
 send(C, fill_pattern, colour(white)).
 afficher(b,X,Y,@p):- 
@@ -57,18 +56,16 @@ send(Z, fill_pattern, colour(darkgreen)))).
 
 
 /*Récupération des pions dans la board*/
-display_pawns :-
-
-
-forall((board(Board),between(0,7,X),
+display_pawns(Board) :-
+forall((between(0,7,X),
 between(0,7,Y),
 pawn(Board,X,Y,P)),
 afficher(P,X,Y,@p)).
 
-run :-
-image,
+gui_display(Board,Score_1,Score_2) :-
+init_image,
 display_board(@p),
-display_pawns,
+display_pawns(Board),
 display_players,
-display_score('3',1),
-display_score('54',2).
+display_score(Score_1,1),
+display_score(Score_2,2).
