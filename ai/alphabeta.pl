@@ -10,7 +10,14 @@
 * @4: -Col - The column where alphabeta will play
 */
 alphabeta_ai(Player, Board, Row, Col) :-
-  alphabeta(Player, Board, Player, [Row, Col], _, 3, -5000, 5000).
+  feature(min_tagged_integer, Alpha),
+  feature(max_tagged_integer, Beta),
+  set_prolog_stack(global, limit(1*10**9)), % 1GB max stack size
+  alphabeta(Player, Board, Player, [Row, Col], _, 3, Alpha, Beta).
+
+% Fallback
+alphabeta_ai(Player, Board, Row, Col) :-
+  alphabeta(Player, Board, Player, [Row, Col], _, 3, -9999, 9999).
 
 /**
 * terminal/4
