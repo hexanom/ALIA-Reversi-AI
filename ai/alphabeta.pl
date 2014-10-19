@@ -12,7 +12,6 @@
 alphabeta_ai(Player, Board, Row, Col) :-
   feature(min_tagged_integer, Alpha),
   feature(max_tagged_integer, Beta),
-  set_prolog_stack(global, limit(1*10**9)), % 1GB max stack size
   alphabeta(Player, Board, Player, [Row, Col], _, 3, Alpha, Beta).
 
 % Fallback
@@ -50,7 +49,7 @@ terminal(Board, FavPlayer, Value, Depth) :-
 * @8: +Beta - Beta value
 */
 
-alphabeta(FavPlayer, Board, _, _, Value, Depth, Alpha, Beta) :-
+alphabeta(FavPlayer, Board, _, _, Value, Depth, _, _) :-
   terminal(Board, FavPlayer, Value, Depth),
   !.
 
@@ -136,7 +135,7 @@ newAlphaBeta(FavPlayer, Player, Value, Alpha, Beta, Alpha, NewBeta) :-
 * @10: +Alpha - Alpha value
 * @11: +Beta - Beta value
 */
-cutoff(FavPlayer, _, Player, CurrentMove, CurrentValue, _, CurrentMove, CurrentValue, _, Alpha, Beta) :-
+cutoff(_ , _, _, CurrentMove, CurrentValue, _, CurrentMove, CurrentValue, _, Alpha, Beta) :-
   Beta =< Alpha.
 
 cutoff(FavPlayer, Board, Player, CurrentMove, CurrentValue, OtherMoves, BestMove, BestValue, Depth, Alpha, Beta) :-

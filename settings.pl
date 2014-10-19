@@ -1,6 +1,6 @@
 /* Module Imports */
 ?- [ai/random].
-?- [ai/minmax].
+%?- [ai/minmax].
 ?- [ai/alphabeta].
 
 ?- [ui/display].

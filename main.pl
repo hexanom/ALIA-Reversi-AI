@@ -43,6 +43,9 @@ game_loop(Board, _) :- % Game finished, score time !
   write('Black: '),
   write(BlackScore).
 
+?- set_prolog_stack(global, limit(1*10**9)). % 1GB max global stack size
+?- set_prolog_stack(local, limit(1*10**9)). % 1GB max local stack size
+
 % Start the loop !
 ?- game_loop([
   [e, e, e, e, e, e, e, e],
