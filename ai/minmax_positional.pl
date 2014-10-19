@@ -1,6 +1,5 @@
 /* Module imports */
 ?- ['../engine/engine'].
-?- ['../settings'].
 ?- ['heuristic_positional'].
 
 /**
@@ -24,14 +23,12 @@ minmax_positional_ai(Player, Board, Row, Col) :-
 */
 terminal(Board, FavPlayer, Value, _) :-
   is_finished(Board),
-  marks(Marks),
-  positional_score(Marks, Board, FavPlayer, Value),
+  positional_score(Board, FavPlayer, Value),
   !.
 
 terminal(Board, FavPlayer, Value, Depth) :-
   Depth == 0, 
-  marks(Marks),
-  positional_score(Marks, Board, FavPlayer, Value),
+  positional_score(Board, FavPlayer, Value),
   !.
 
 /**
