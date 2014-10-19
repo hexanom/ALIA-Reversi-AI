@@ -66,7 +66,7 @@ bestMove(FavPlayer, Board, Player, [], [], Value, Depth) :-
   minimax(FavPlayer, Board, OtherPlayer, _, Value, NewDepth).
 
 % One possible move
-bestMove(FavPlayer, Board, Player, [[Row, Col]], [[Row, Col]], Value, Depth) :- 
+bestMove(FavPlayer, Board, Player, [[Row, Col]], [Row, Col], Value, Depth) :- 
   !,
   NewDepth is Depth - 1,
   
