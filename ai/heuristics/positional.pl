@@ -35,6 +35,6 @@ score_board(Marks, [Ligne|AutresLignes], LigneIndex, Player, Score) :-
 	score_line(Marks, Ligne, LigneIndex, 0, Player, ListeScore),
 	Score is ListeScore + TailScore.
 	
-positional_score(Board, Player, Score) :-
+heuristic_positional_score(Board, Player, Score) :-
 	marks(Marks),
 	score_board(Marks, Board, 0, Player, Score).
