@@ -1,7 +1,7 @@
 /* Module Imports */
 ?- [ai/random].
-%?- [ai/minmax].
-?- [ai/alphabeta].
+%?- [ai/minmax_score].
+?- [ai/alphabeta_score].
 
 ?- [ui/display].
 
