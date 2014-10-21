@@ -6,9 +6,9 @@
 * Play with the alphabeta algorithm
 * @1: +Player - The player running the ai
 * @2: +Board - The board to play on
-* @3: +Heuristic - Heuristic (predicate) used to evaluate the state of the board
-* @4: -Row - The row where alphabeta will play
-* @5: -Col - The column where alphabeta will play
+* @3: -Row - The row where alphabeta will play
+* @4: -Col - The column where alphabeta will play
+* @5: +Heuristic - Heuristic (predicate) used to evaluate the state of the board
 */
 alphabeta_ai(Player, Board, Row, Col, Heuristic) :-
   feature(min_tagged_integer, Alpha),
