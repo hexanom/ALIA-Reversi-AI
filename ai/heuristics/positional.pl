@@ -10,30 +10,31 @@ marks([
 	[500,-150,30,10,10,30,-150,500]
 ]).
 
-score_square(Case, ValeurCase, Player, ValeurCase) :-
-	Player == Case.
+
+score_square(Square, SquareValue, Player, SquareValue) :-
+	Player == Square.
 	
-score_square(Case, _, Player, 0) :-
-	Player \== Case.
+score_square(Square, _, Player, 0) :-
+	Player \== Square.
 	
-square_value(Marks, LigneIndex, CaseIndex, ValeurCase) :-
-	nth0(LigneIndex, Marks, Ligne),
-	nth0(CaseIndex, Ligne, ValeurCase).
+square_value(Marks, IndexLine, SquareIndex, SquareValue) :-
+	nth0(IndexLine, Marks, Line),
+	nth0(SquareIndex, Line, SquareValue).
 	
 score_line(_, [], _, _, _, 0).
-score_line(Marks, [Case|AutresCases], LigneIndex, CaseIndex, Player, LigneScore) :-
-	NewCaseIndex is CaseIndex + 1,
-	score_line(Marks, AutresCases, LigneIndex, NewCaseIndex, Player, TailLigneScore),
-	square_value(Marks, LigneIndex, CaseIndex, ValeurCase),
-	score_square(Case, ValeurCase, Player, ScoreCase),
-	LigneScore is ScoreCase + TailLigneScore.
+score_line(Marks, [Square|OtherSquares], IndexLine, SquareIndex, Player, ScoreLine) :-
+	NewSquareIndex is SquareIndex + 1,
+	score_line(Marks, OtherSquares, IndexLine, NewSquareIndex, Player, TailScoreLine),
+	square_value(Marks, IndexLine, SquareIndex, SquareValue),
+	score_square(Square, SquareValue, Player, SquareScore),
+	ScoreLine is SquareScore + TailScoreLine.
 	
 score_board(_, [], _, _, 0).
-score_board(Marks, [Ligne|AutresLignes], LigneIndex, Player, Score) :-
-	NewIndex is LigneIndex + 1,
-	score_board(Marks, AutresLignes, NewIndex, Player, TailScore),
-	score_line(Marks, Ligne, LigneIndex, 0, Player, ListeScore),
-	Score is ListeScore + TailScore.
+score_board(Marks, [Line|OtherLines], IndexLine, Player, Score) :-
+	NewIndex is IndexLine + 1,
+	score_board(Marks, OtherLines, NewIndex, Player, TailScore),
+	score_line(Marks, Line, IndexLine, 0, Player, ListScore),
+	Score is ListScore + TailScore.
 	
 heuristic_positional_score(Board, Player, Score) :-
 	marks(Marks),
