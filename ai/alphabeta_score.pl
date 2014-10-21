@@ -2,20 +2,20 @@
 ?- ['../engine/engine'].
 
 /**
-* alphabeta_ai/4
+* alphabeta_score_ai/4
 * Play with the alphabeta algorithm
 * @1: +Player - The player running the ai
 * @2: +Board - The board to play on
 * @3: -Row - The row where alphabeta will play
 * @4: -Col - The column where alphabeta will play
 */
-alphabeta_ai(Player, Board, Row, Col) :-
+alphabeta_score_ai(Player, Board, Row, Col) :-
   feature(min_tagged_integer, Alpha),
   feature(max_tagged_integer, Beta),
   alphabeta(Player, Board, Player, [Row, Col], _, 3, Alpha, Beta).
 
 % Fallback
-alphabeta_ai(Player, Board, Row, Col) :-
+alphabeta_score_ai(Player, Board, Row, Col) :-
   alphabeta(Player, Board, Player, [Row, Col], _, 3, -9999, 9999).
 
 /**

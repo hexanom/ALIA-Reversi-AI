@@ -2,14 +2,14 @@
 ?- ['../engine/engine'].
 
 /**
-* minmax_ai/4
+* alphabeta_score_ai/4
 * Play with the minmax algorithm
 * @1: +Player - The player running the ai
 * @2: +Board - The board to play on
 * @3: -Row - The row where minmax will play
 * @4: -Col - The column where minmax will play
 */
-minmax_ai(Player, Board, Row, Col) :-
+minmax_score_ai(Player, Board, Row, Col) :-
   minimax(Player, Board, Player, [Row, Col], _, 2).
 
 /**
