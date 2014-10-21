@@ -1,4 +1,4 @@
-%% Used for positionnal heuristic
+%% Each square on the board has a different value that we use to compute the IA's score
 marks([
 	[500,-150,30,10,10,30,-150,500],
 	[-150,-250,0,0,0,0,-250,-150],
