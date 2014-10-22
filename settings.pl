@@ -6,10 +6,11 @@
 ?- [ai/minmax].
 
 ?- [ui/display].
+?- [ui/display_gui].
 
 /* Reversi settings */
 % Choose your display
-display(Board) :- console_display(Board).
+display(Board) :- gui_display(Board).
 
 %% Choose your White Player AI
 ai_w(Player, Board, Row, Col) :- random_ai(Player, Board, Row, Col).
