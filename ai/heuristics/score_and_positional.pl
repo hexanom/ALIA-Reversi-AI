@@ -21,12 +21,12 @@ count_moves(Board, NumberOfMoves) :-
 
 heuristic_combination_score_and_positional(Board, Player, Score) :-
 	count_moves(Board, NumberOfMoves),
-	NumberOfMoves =< 40,
+	NumberOfMoves =< 50,
 	heuristic_positional_score(Board, Player, Score),
 	!.
 
 heuristic_combination_score_and_positional(Board, Player, Score) :-
 	count_moves(Board, NumberOfMoves),
-	NumberOfMoves > 40,
+	NumberOfMoves > 50,
 	heuristic_score(Board, Player, Score),
 	!.
