@@ -11,9 +11,9 @@ init_image :-
   send(@p, open).
 
 display_players :-
-  new(T1, text('player_1 :')),
+  new(T1, text('White:')),
   send(@p, display, T1, point(40,420)),
-  new(T2, text(': player_2')),
+  new(T2, text(': Black')),
   send(@p, display, T2, point(320, 420)).
 
 display_score(Score,1) :-
