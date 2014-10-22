@@ -22,4 +22,4 @@ heuristic_score_and_positional_score(Board, Player, Score) :-
 heuristic_score_and_positional_score(Board, Player, Score) :-
 	count_moves(Board, NumberOfMoves),
 	NumberOfMoves > 40,
-	heuristic_score(Board, Player, Value).
+	heuristic_score(Board, Player, Score).
