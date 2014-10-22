@@ -2,6 +2,7 @@
 ?- [ai/random].
 ?- [ai/heuristics/positional].
 ?- [ai/heuristics/score].
+?- [ai/heuristics/score_and_positional].
 ?- [ai/alphabeta].
 ?- [ai/minmax].
 
