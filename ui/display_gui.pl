@@ -1,5 +1,5 @@
-?- [../engine/engine].
-
+?- ['../engine/model'].
+?- ['../engine/rules'].
 
 /*création de la fenêtre (variable globale)*/
 init_image :-
@@ -55,6 +55,7 @@ display_pawns(Board) :-
   pawn(Board,X,Y,P)),
   afficher(P,X,Y,@p)).
 
+
 gui_display(Board) :-
   init_image,
   display_board(@p),
@@ -63,4 +64,5 @@ gui_display(Board) :-
   score(Board, w, ScoreW),
   score(Board, b, ScoreB),
   display_score(ScoreW,1),
-  display_score(ScoreB,2).
+  display_score(ScoreB,2),
+  sleep(0.5).
