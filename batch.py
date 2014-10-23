@@ -1,9 +1,11 @@
 # pip install matplotlib
+# pip install numpy
 import os
 import re
 from pylab import *
+import numpy
 
-times = 5
+times = 10
 
 w_scores = []
 b_scores = []
@@ -17,10 +19,28 @@ for i in range(0, times):
             b_scores.append(float(re.split('\s', l)[1]))
 
 print "White AVG: "
-print reduce(lambda x, y: x + y, w_scores) / len(w_scores)
+print numpy.mean(w_scores)
+print "Median: "
+print numpy.median(w_scores)
+print "25th percentile: "
+print numpy.percentile(w_scores, 25)
+print "75th percentile: "
+print numpy.percentile(w_scores, 75)
+print "Variance: "
+print numpy.var(w_scores)
+print " "
 
 print "Black AVG: "
-print reduce(lambda x, y: x + y, b_scores) / len(b_scores)
+print numpy.mean(b_scores)
+print "Median: "
+print numpy.median(b_scores)
+print "25th percentile: "
+print numpy.percentile(b_scores, 25)
+print "75th percentile: "
+print numpy.percentile(b_scores, 75)
+print "Variance: "
+print numpy.var(b_scores)
+print " "
 
 figure()
 plot(range(0, times), w_scores, '#cccccc', label="White")
