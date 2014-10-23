@@ -1,4 +1,4 @@
-?- [../engine/engine].
+?- ['../engine/engine'].
 
 
 /*création de la fenêtre (variable globale)*/
