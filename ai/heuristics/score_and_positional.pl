@@ -1,10 +1,9 @@
 /* Module imports */
-?- ['../engine/engine'].
 ?- ['positional'].
 ?- ['score'].
 
 % Combination of score and positional heuristics
-% For the first 40 moves positional heuristic is used
+% For the first 50 moves positional heuristic is used
 % And for the last ones, score heuristic is chosen
 
 /**
