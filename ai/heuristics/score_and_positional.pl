@@ -3,6 +3,10 @@
 ?- ['positional'].
 ?- ['score'].
 
+% Combination of score and positional heuristics
+% For the first 40 moves positional heuristic is used
+% And for the last ones, score heuristic is chosen
+
 /**
  * count_moves/2
  * Counts the number of moves already played on the Board
@@ -11,15 +15,18 @@
  */
 count_moves([], 0).
 count_moves(Board, NumberOfMoves) :-
-	score(Board, e, Score),
-	NumberOfMoves is 60 - Score. 
-	
-heuristic_score_and_positional_score(Board, Player, Score) :-
-	count_moves(Board, NumberOfMoves),
-	NumberOfMoves =< 40,
-	heuristic_positional_score(Board, Player, Score).
+	score(Board, e, EmptySquares),
+	NumberOfMoves is 60 - EmptySquares,
+	!.
 
-heuristic_score_and_positional_score(Board, Player, Score) :-
+heuristic_combination_score_and_positional(Board, Player, Score) :-
 	count_moves(Board, NumberOfMoves),
-	NumberOfMoves > 40,
-	heuristic_score(Board, Player, Value).
+	NumberOfMoves =< 50,
+	heuristic_positional_score(Board, Player, Score),
+	!.
+
+heuristic_combination_score_and_positional(Board, Player, Score) :-
+	count_moves(Board, NumberOfMoves),
+	NumberOfMoves > 50,
+	heuristic_score(Board, Player, Score),
+	!.

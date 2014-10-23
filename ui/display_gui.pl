@@ -17,9 +17,18 @@ display_players :-
   send(@p, display, T2, point(320, 420)).
 
 display_score(Score,1) :-
+  send(@p, display,new(B1, box(42,17)),point(93,420)),
+  send(B1, fill_pattern, colour(darkgreen)),
+  send(@p, display,new(B2, box(40,15)),point(93,420)),
+  send(B2, fill_pattern, colour(white)),
   new(T3, text(Score)),
   send(@p, display, T3, point(100, 420)).
-display_score(Score,2) :-
+
+  display_score(Score,2) :-
+  send(@p, display,new(B3, box(42,17)),point(293,420)),
+  send(B3, fill_pattern, colour(darkgreen)),
+  send(@p, display,new(B4, box(40,15)),point(293,420)),
+  send(B4, fill_pattern, colour(white)),
   new(T4, text(Score)),
   send(@p, display, T4, point(300, 420)).
 
