@@ -38,7 +38,7 @@ afficher(w,X,Y,@p):-
 afficher(b,X,Y,@p):-
   send(@p, display, new(R, circle(50)), point(50*X,50*Y)),
   send(R, fill_pattern, colour(black)).
-afficher(e,X,Y,@p).
+afficher(e,_,_,@p).
 
 /*création de la grille.*/
 display_board(@p) :-
