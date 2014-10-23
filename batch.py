@@ -5,7 +5,7 @@ import re
 from pylab import *
 import numpy
 
-times = 10
+times = 20
 
 w_scores = []
 b_scores = []
